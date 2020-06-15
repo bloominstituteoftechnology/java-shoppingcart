@@ -1,5 +1,7 @@
 package com.lambdaschool.shoppingcart.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -11,15 +13,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "cartitems")
 public class CartItem
-        extends Auditable implements Serializable
+        extends Auditable
+        implements Serializable
 {
     @Id
     @ManyToOne
     @JoinColumn(name = "cartid")
+    @JsonIgnoreProperties(value = "products")
     private Cart cart;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "productid")
+    @JsonIgnoreProperties(value = "carts")
     private Product product;
 
     private long quantity;
@@ -86,15 +92,15 @@ public class CartItem
                 cart.equals(cart_item.cart) &&
                 product.equals(cart_item.product) &&
                 Objects.equals(comments,
-                        cart_item.comments);
+                               cart_item.comments);
     }
 
     @Override
     public int hashCode()
     {
         return Objects.hash(cart,
-                product,
-                quantity,
-                comments);
+                            product,
+                            quantity,
+                            comments);
     }
 }

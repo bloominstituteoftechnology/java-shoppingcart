@@ -10,11 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "products")
+@JsonIgnoreProperties(value = "hasprice")
 public class Product
         extends Auditable
 {
@@ -26,7 +28,10 @@ public class Product
             unique = true)
     private String name;
 
+    @Transient
+    public boolean hasprice = false;
     private double price;
+
     private String description;
     private String comments;
 
@@ -68,6 +73,7 @@ public class Product
 
     public void setPrice(double price)
     {
+        hasprice = true;
         this.price = price;
     }
 

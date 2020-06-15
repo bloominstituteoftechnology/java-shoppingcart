@@ -72,12 +72,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Resource Not Found");
         errorDetail.setDetail(rnfe.getMessage());
         errorDetail.setDeveloperMessage(rnfe.getClass()
-                .getName());
+                                                .getName());
         errorDetail.setErrors(helper.getConstraintViolation(rnfe));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                HttpStatus.NOT_FOUND);
+                                    null,
+                                    HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -95,12 +95,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Unexpected Resource");
         errorDetail.setDetail(rfe.getMessage());
         errorDetail.setDeveloperMessage(rfe.getClass()
-                .getName());
+                                                .getName());
         errorDetail.setErrors(helper.getConstraintViolation(rfe));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                HttpStatus.BAD_REQUEST);
+                                    null,
+                                    HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -127,12 +127,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Rest Internal Exception");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName());
+                                                .getName());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /*********************
@@ -165,8 +165,8 @@ public class RestExceptionHandler
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -194,8 +194,8 @@ public class RestExceptionHandler
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -225,8 +225,8 @@ public class RestExceptionHandler
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -251,12 +251,12 @@ public class RestExceptionHandler
         errorDetail.setTitle(ex.getVariableName() + " Missing Path Variable");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName());
+                                                .getName());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -284,8 +284,8 @@ public class RestExceptionHandler
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -310,12 +310,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Path: " + request.getDescription(false) + " Request Binding Exception");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName());
+                                                .getName());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -340,12 +340,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Path: " + request.getDescription(false) + " Conversion Not Support");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName() + " " + ex.getMostSpecificCause());
+                                                .getName() + " " + ex.getMostSpecificCause());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -370,12 +370,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Path: " + request.getDescription(false) + " Type Mismatch");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName() + " " + ex.getMostSpecificCause());
+                                                .getName() + " " + ex.getMostSpecificCause());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -400,12 +400,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Path: " + request.getDescription(false) + " Message Not Readable");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName() + " " + ex.getMostSpecificCause());
+                                                .getName() + " " + ex.getMostSpecificCause());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -430,12 +430,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Path: " + request.getDescription(false) + " Message Not Writable");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName() + " " + ex.getMostSpecificCause());
+                                                .getName() + " " + ex.getMostSpecificCause());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -460,12 +460,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Method Argument Not Valid");
         errorDetail.setDetail(request.getDescription(false) + " | parameter: " + ex.getParameter());
         errorDetail.setDeveloperMessage(ex.getBindingResult()
-                .toString());
+                                                .toString());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -490,12 +490,12 @@ public class RestExceptionHandler
         errorDetail.setTitle(request.getDescription(false) + " Missing Servlet Request");
         errorDetail.setDetail("Request Part Name: " + ex.getRequestPartName() + " | " + ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName());
+                                                .getName());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -520,12 +520,12 @@ public class RestExceptionHandler
         errorDetail.setTitle("Bind Exception");
         errorDetail.setDetail(ex.getMessage());
         errorDetail.setDeveloperMessage(ex.getClass()
-                .getName() + " " + ex.getBindingResult());
+                                                .getName() + " " + ex.getBindingResult());
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
 
@@ -557,8 +557,8 @@ public class RestExceptionHandler
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 
     /**
@@ -586,7 +586,7 @@ public class RestExceptionHandler
         errorDetail.setErrors(helper.getConstraintViolation(ex));
 
         return new ResponseEntity<>(errorDetail,
-                null,
-                status);
+                                    null,
+                                    status);
     }
 }
