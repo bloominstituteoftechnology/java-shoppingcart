@@ -2,7 +2,6 @@ package com.lambdaschool.shoppingcart.exceptions;
 
 import com.lambdaschool.shoppingcart.handlers.HelperFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.WebRequest;
@@ -33,7 +32,7 @@ public class CustomErrorDetails
     @Override
     public Map<String, Object> getErrorAttributes(
             WebRequest webRequest,
-            ErrorAttributeOptions includeStackTrace)
+            boolean includeStackTrace)
     {
 
         //Get all the normal error information

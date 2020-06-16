@@ -67,7 +67,7 @@ public class CartController
         dataProduct.setProductid(productid);
 
         cartService.save(dataCart, dataProduct);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/cart/{cartid}/product/{productid}")
@@ -81,6 +81,6 @@ public class CartController
         dataProduct.setProductid(productid);
 
         cartService.delete(dataCart, dataProduct);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

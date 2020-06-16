@@ -95,7 +95,7 @@ public class ProductServiceImpl
             currentProduct.setName(product.getName());
         }
 
-        if (currentProduct.hasprice)
+        if (product.hasprice)
         {
             currentProduct.setPrice(product.getPrice());
         }

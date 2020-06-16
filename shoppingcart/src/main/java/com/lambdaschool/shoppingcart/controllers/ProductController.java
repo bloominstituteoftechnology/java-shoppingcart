@@ -1,7 +1,6 @@
 package com.lambdaschool.shoppingcart.controllers;
 
 import com.lambdaschool.shoppingcart.models.Product;
-import com.lambdaschool.shoppingcart.models.User;
 import com.lambdaschool.shoppingcart.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -70,7 +69,7 @@ public class ProductController
             @RequestBody Product updateProduct,
             @PathVariable long productid)
     {
-        productService.update(productid,updateProduct);
+        productService.update(productid, updateProduct);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

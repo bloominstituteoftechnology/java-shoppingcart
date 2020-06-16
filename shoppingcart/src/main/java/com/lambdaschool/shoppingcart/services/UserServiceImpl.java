@@ -2,7 +2,6 @@ package com.lambdaschool.shoppingcart.services;
 
 import com.lambdaschool.shoppingcart.exceptions.ResourceFoundException;
 import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
-import com.lambdaschool.shoppingcart.models.Cart;
 import com.lambdaschool.shoppingcart.models.User;
 import com.lambdaschool.shoppingcart.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class UserServiceImpl
         if (user.getCarts()
                 .size() > 0)
         {
-             throw new ResourceFoundException("Carts are not added through users");
+            throw new ResourceFoundException("Carts are not added through users");
         }
         return userrepos.save(newUser);
     }

@@ -21,6 +21,7 @@ public interface CartService
     /**
      * Returns a list of all the Carts for the given user id
      *
+     * @param userid userid that you seek
      * @return List of Carts. If no Carts, empty list.
      */
     List<Cart> findAllByUserId(Long userid);
@@ -58,7 +59,6 @@ public interface CartService
      *
      * @param cart    the cart to lose the product
      * @param product the product to be removed
-     * @return the saved Cart object including any automatically generated fields
      */
     void delete(Cart cart,
                 Product product);
