@@ -2,6 +2,12 @@
 
 A Student that completes this project shows they can:
 
+* understand the flow and implement of Spring Security and OAuth2 to provide authentication for a project
+* read user information from the access token
+* understand the issues related to CORS and implement solutions to those issues
+* understand how to implement a new user and logout endpoints
+* use Postman to manually test Web APIs using Authentication
+
 ## Introduction
 
 A shopping cart is a very common application so let's look at one. This Java Spring REST API application will provide endpoints for clients to perform the various CRUD operations on data sets contained in the application's data. Access to these endpoints will be secured using OAuth2 Authentication.
@@ -547,9 +553,9 @@ STATUS OK
   * [ ] POST http://localhost:2019/carts/create/product/1
     * [ ] Drop the user path variable and create a new cart for the authenticated user
   * [ ] PUT http://localhost:2019/carts/update/cart/1/product/1
-    * [ ] Any user with role Admin can access this endpoint. Any user with role User can on access carts that they own. This would similar to the function in our usermodel under OAuth2 for updating a user using the helper.isAuthorizedToMakeChange() method.
+    * [ ] Any user with role Admin can access this endpoint. Any user with role User can only access carts that they own. This would similar to the function in our usermodel under OAuth2 for updating a user using the helper.isAuthorizedToMakeChange() method.
   * [ ] DELETE http://localhost:2019/carts/delete/cart/1/product/1
-    * [ ] Any user with role Admin can access this endpoint. Any user with role User can on access carts that they own.  This would similar to the function in our usermodel under OAuth2 for updating a user using the helper.isAuthorizedToMakeChange() method.
+    * [ ] Any user with role Admin can access this endpoint. Any user with role User can only access carts that they own.  This would similar to the function in our usermodel under OAuth2 for updating a user using the helper.isAuthorizedToMakeChange() method.
   * [ ] http://localhost:2019/products/products
     * [ ] Only users with role Admin can access this endpoint
   * [ ] http://localhost:2019/products/product/1
