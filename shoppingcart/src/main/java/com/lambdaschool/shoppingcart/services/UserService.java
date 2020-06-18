@@ -40,4 +40,12 @@ public interface UserService
      * @return the saved user object including any automatically generated fields
      */
     User save(User user);
+
+    void deleteUserRole(
+            long userid,
+            long roleid);
+
+    void addUserRole(
+            long userid,
+            long roleid);
 }
