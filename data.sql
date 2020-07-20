@@ -49,4 +49,10 @@ INSERT INTO CARTITEMS(CARTID, PRODUCTID, QUANTITY, COMMENTS, CREATED_BY, CREATED
             (3, 3, 17, '', 'SYSTEM', CURRENT_TIMESTAMP, 'SYSTEM', CURRENT_TIMESTAMP);
 
 
+/*
+We must tell hibernate the ids that have already been used.
+The number must be larger than the last used id.
+15 > 3 so we are good!
+ */
+
 alter sequence hibernate_sequence restart with 15;
