@@ -5,6 +5,7 @@ import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
 import com.lambdaschool.shoppingcart.models.User;
 import com.lambdaschool.shoppingcart.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +63,7 @@ public class UserServiceImpl
         User newUser = new User();
 
         newUser.setUsername(user.getUsername());
+        newUser.setPasswordNoEncrypt(user.getPassword());
         newUser.setComments(user.getComments());
 
         if (user.getCarts()
@@ -70,5 +72,16 @@ public class UserServiceImpl
             throw new ResourceFoundException("Carts are not added through users");
         }
         return userrepos.save(newUser);
+    }
+
+    @Override
+    public User findByUsername(String s)
+    {
+        User user = userrepos.findByUsername(s.toLowerCase());
+        if (user == null)
+        {
+            throw new UsernameNotFoundException("Invalid username or password ");
+        }
+        return user;
     }
 }
