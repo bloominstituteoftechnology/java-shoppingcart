@@ -24,7 +24,7 @@ public interface CartService
      * @param userid userid that you seek
      * @return List of Carts. If no Carts, empty list.
      */
-    List<Cart> findAllByUserId(Long userid);
+    List<Cart> findAllByUsername(String username);
 
     /**
      * Returns the Cart with the given primary key.

@@ -7,6 +7,8 @@ import com.lambdaschool.shoppingcart.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +27,10 @@ public class CartController
     private CartService cartService;
 
     @GetMapping(value = "/user", produces = {"application/json"})
-    public ResponseEntity<?> listAllCarts(@PathVariable long userid)
+    public ResponseEntity<?> listAllCarts()
     {
-        List<Cart> myCarts = cartService.findAllByUserId(userid);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<Cart> myCarts = cartService.findAllByUsername(authentication.getName());
         return new ResponseEntity<>(myCarts, HttpStatus.OK);
     }
 
@@ -39,15 +42,15 @@ public class CartController
     {
         Cart p = cartService.findCartById(cartId);
         return new ResponseEntity<>(p,
-                                    HttpStatus.OK);
+                HttpStatus.OK);
     }
 
-    @PostMapping(value = "/create/user/{userid}/product/{productid}")
-    public ResponseEntity<?> addNewCart(@PathVariable long userid,
-                                        @PathVariable long productid)
+    @PostMapping(value = "/create/product/{productid}")
+    public ResponseEntity<?> addNewCart(@PathVariable long productid)
     {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User dataUser = new User();
-        dataUser.setUserid(userid);
+        dataUser.setUsername(authentication.getName());
 
         Product dataProduct = new Product();
         dataProduct.setProductid(productid);

@@ -46,6 +46,11 @@ public class UserServiceImpl
                 .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
     }
 
+    @Override
+    public User findByName(String username) {
+        return userrepos.findByUsername(username);
+    }
+
     @Transactional
     @Override
     public void delete(long id)
@@ -63,6 +68,7 @@ public class UserServiceImpl
 
         newUser.setUsername(user.getUsername());
         newUser.setComments(user.getComments());
+        newUser.setPassword(user.getPassword());
 
         if (user.getCarts()
                 .size() > 0)
@@ -70,9 +76,5 @@ public class UserServiceImpl
             throw new ResourceFoundException("Carts are not added through users");
         }
         return userrepos.save(newUser);
-    }
-    @Override
-    public User findByName(String username) {
-        return userrepos.findByUsername(username);
     }
 }
