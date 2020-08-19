@@ -24,7 +24,7 @@ public class CartController
     @Autowired
     private CartService cartService;
 
-    @GetMapping(value = "/user", produces = {"application/json"})
+    @GetMapping(value = "/user/{userid}", produces = {"application/json"})
     public ResponseEntity<?> listAllCarts(@PathVariable long userid)
     {
         List<Cart> myCarts = cartService.findAllByUserId(userid);
