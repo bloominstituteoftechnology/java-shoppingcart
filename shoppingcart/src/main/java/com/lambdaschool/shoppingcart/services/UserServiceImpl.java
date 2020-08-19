@@ -71,4 +71,8 @@ public class UserServiceImpl
         }
         return userrepos.save(newUser);
     }
+    @Override
+    public User findByName(String username) {
+        return userrepos.findByUsername(username);
+    }
 }
