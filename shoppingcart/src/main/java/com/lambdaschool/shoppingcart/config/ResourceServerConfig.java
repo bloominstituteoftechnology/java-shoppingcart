@@ -1,6 +1,7 @@
 package com.lambdaschool.shoppingcart.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -9,12 +10,12 @@ import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHand
 
 @Configuration
 @EnableResourceServer
-public class ResourceServerConfig extends ResourceServerConfigurerAdapter
+public class  ResourceServerConfig extends ResourceServerConfigurerAdapter
 {
     private static final String RESOURCE_ID = "resource_id";
 
     @Override
-    public void configure(ResourceServerSecurityConfigurer resources)
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception
     {
         resources.resourceId(RESOURCE_ID).stateless(false);
     }
@@ -38,10 +39,23 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter
             .permitAll()
             .antMatchers("/logout")
             .authenticated()
-            .antMatchers("/users/**")
-            .hasAnyRole("ADMIN", "USER", "DATA")
+            .antMatchers("/users/users", "/users/user/**")
+            .hasAnyRole("ADMIN")
             .antMatchers("/roles/**")
             .hasAnyRole("ADMIN")
+            .antMatchers(HttpMethod.POST,
+                            "/users/**")
+            .hasAnyRole("ADMIN")
+            .antMatchers("/users/**")
+            .authenticated()
+//            .antMatchers("/carts/user", "/carts/create/**")
+//            .authenticated()
+//            .antMatchers("/carts/cart/**", "/carts/update/**", "/carts/delete/**")
+//            .hasAnyRole("ADMIN")
+//            .antMatchers("/products/**")
+//            .hasAnyRole("ADMIN")
+//            .antMatchers("/users/myinfo")
+//            .authenticated()
             .and()
             .exceptionHandling()
             .accessDeniedHandler(new OAuth2AccessDeniedHandler());
