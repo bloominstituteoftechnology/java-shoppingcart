@@ -15,7 +15,7 @@ import java.util.List;
 public interface CartRepository
         extends CrudRepository<Cart, Long>
 {
-    List<Cart> findAllByUser_Userid(long id);
+    List<Cart> findAllByUser_Username(String username);
 
     @Query(value = "SELECT COUNT(*) as count FROM cartitems WHERE cartid = :cartid AND productid = :productid", nativeQuery = true)
     JustTheCount checkCartItems(long cartid,
