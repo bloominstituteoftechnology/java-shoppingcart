@@ -4,6 +4,5 @@ com.lambdaschool.shoppingcart.controllers
 com.lambdaschool.shoppingcart.exceptions
 com.lambdaschool.shoppingcart.handlers
 com.lambdaschool.shoppingcart.models
-com.lambdaschool.shoppingcart.repositories
+com.lambdaschool.shoppingcart.repository
 com.lambdaschool.shoppingcart.services
-com.lambdaschool.shoppingcart.views

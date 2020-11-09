@@ -4,12 +4,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 /**
  * Main class to start the application.
  */
 @EnableJpaAuditing
 @SpringBootApplication
-public class ShoppingcartApplication
+public class ShoppingCartApplication
 {
     /**
      * Main method to start the application.
@@ -18,8 +23,8 @@ public class ShoppingcartApplication
      */
     public static void main(String[] args)
     {
-        SpringApplication.run(ShoppingcartApplication.class,
+        // now run the real application!
+        SpringApplication.run(ShoppingCartApplication.class,
                               args);
     }
-
 }

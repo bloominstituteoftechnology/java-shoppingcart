@@ -1,29 +1,49 @@
 package com.lambdaschool.shoppingcart.services;
 
-import com.lambdaschool.shoppingcart.exceptions.ResourceFoundException;
-import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
+import com.lambdaschool.shoppingcart.models.Role;
 import com.lambdaschool.shoppingcart.models.User;
-import com.lambdaschool.shoppingcart.repositories.UserRepository;
+import com.lambdaschool.shoppingcart.models.UserRoles;
+import com.lambdaschool.shoppingcart.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements UserService Interface
+ */
 @Transactional
 @Service(value = "userService")
 public class UserServiceImpl
         implements UserService
 {
     /**
-     * Connects this service to the users repository
+     * Connects this service to the User table.
      */
     @Autowired
     private UserRepository userrepos;
 
+    /**
+     * Connects this service to the Role table
+     */
     @Autowired
-    private CartService cartService;
+    private RoleService roleService;
+
+    public User findUserById(long id) throws
+            ResourceNotFoundException
+    {
+        return userrepos.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
+    }
+
+    @Override
+    public List<User> findByNameContaining(String username)
+    {
+        return userrepos.findByUsernameContainingIgnoreCase(username.toLowerCase());
+    }
 
     @Override
     public List<User> findAll()
@@ -39,13 +59,6 @@ public class UserServiceImpl
         return list;
     }
 
-    @Override
-    public User findUserById(long id)
-    {
-        return userrepos.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
-    }
-
     @Transactional
     @Override
     public void delete(long id)
@@ -55,20 +68,118 @@ public class UserServiceImpl
         userrepos.deleteById(id);
     }
 
+    @Override
+    public User findByName(String name)
+    {
+        User uu = userrepos.findByUsername(name.toLowerCase());
+        if (uu == null)
+        {
+            throw new ResourceNotFoundException("User name " + name + " not found!");
+        }
+        return uu;
+    }
+
     @Transactional
     @Override
     public User save(User user)
     {
         User newUser = new User();
 
-        newUser.setUsername(user.getUsername());
-        newUser.setComments(user.getComments());
+        if (user.getUserid() != 0)
+        {
+            userrepos.findById(user.getUserid())
+                    .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
+            newUser.setUserid(user.getUserid());
+        }
 
-        if (user.getCarts()
+        newUser.setUsername(user.getUsername()
+                                    .toLowerCase());
+        newUser.setPassword(user.getPassword());
+        newUser.setPrimaryemail(user.getPrimaryemail()
+                                        .toLowerCase());
+
+        newUser.getRoles()
+                .clear();
+        for (UserRoles ur : user.getRoles())
+        {
+            Role addRole = roleService.findRoleById(ur.getRole()
+                                                            .getRoleid());
+            newUser.getRoles()
+                    .add(new UserRoles(newUser, addRole));
+        }
+
+        newUser.getUseremails()
+                .clear();
+        for (Useremail ue : user.getUseremails())
+        {
+            newUser.getUseremails()
+                    .add(new Useremail(newUser,
+                                       ue.getUseremail()));
+        }
+
+        return userrepos.save(newUser);
+    }
+
+    @Transactional
+    @Override
+    public User update(
+            User user,
+            long id)
+    {
+        User currentUser = findUserById(id);
+
+        if (user.getUsername() != null)
+        {
+            currentUser.setUsername(user.getUsername()
+                                            .toLowerCase());
+        }
+
+        if (user.getPassword() != null)
+        {
+            currentUser.setPassword(user.getPassword());
+        }
+
+        if (user.getPrimaryemail() != null)
+        {
+            currentUser.setPrimaryemail(user.getPrimaryemail()
+                                                .toLowerCase());
+        }
+
+        if (user.getRoles()
                 .size() > 0)
         {
-            throw new ResourceFoundException("Carts are not added through users");
+            currentUser.getRoles()
+                    .clear();
+            for (UserRoles ur : user.getRoles())
+            {
+                Role addRole = roleService.findRoleById(ur.getRole()
+                                                                .getRoleid());
+
+                currentUser.getRoles()
+                        .add(new UserRoles(currentUser, addRole));
+            }
         }
-        return userrepos.save(newUser);
+
+        if (user.getUseremails()
+                .size() > 0)
+        {
+            currentUser.getUseremails()
+                    .clear();
+            for (Useremail ue : user.getUseremails())
+            {
+                currentUser.getUseremails()
+                        .add(new Useremail(currentUser,
+                                           ue.getUseremail()));
+            }
+        }
+
+        return userrepos.save(currentUser);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAll()
+    {
+        userrepos.deleteAll();
     }
 }
