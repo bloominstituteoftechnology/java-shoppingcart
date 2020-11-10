@@ -3,35 +3,38 @@ package com.lambdaschool.shoppingcart.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
 @JsonIgnoreProperties(value = "hasprice")
 public class Product
-        extends Auditable
+    extends Auditable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long productid;
 
     @Column(nullable = false,
-            unique = true)
+        unique = true)
     private String name;
 
     @Transient
     public boolean hasprice = false;
+
     private double price;
 
     private String description;
+
     private String comments;
 
     @OneToMany(mappedBy = "product",
-            cascade = CascadeType.ALL)
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
     @JsonIgnoreProperties(value = "product",
-            allowSetters = true)
-    private List<CartItem> carts = new ArrayList<>();
+        allowSetters = true)
+    private Set<CartItem> carts = new HashSet<>();
 
     public Product()
     {
@@ -89,12 +92,12 @@ public class Product
         this.comments = comments;
     }
 
-    public List<CartItem> getCarts()
+    public Set<CartItem> getCarts()
     {
         return carts;
     }
 
-    public void setCarts(List<CartItem> carts)
+    public void setCarts(Set<CartItem> carts)
     {
         this.carts = carts;
     }

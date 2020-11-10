@@ -42,7 +42,7 @@ public class ShoppingCartApplication
         if (!stop)
         {
             ApplicationContext ctx = SpringApplication.run(com.lambdaschool.shoppingcart.ShoppingCartApplication.class,
-                                                           args);
+                args);
 
             DispatcherServlet dispatcherServlet = (DispatcherServlet) ctx.getBean("dispatcherServlet");
             dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);

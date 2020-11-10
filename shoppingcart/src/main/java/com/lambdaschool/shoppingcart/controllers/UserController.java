@@ -6,15 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -43,12 +35,12 @@ public class UserController
      * @see UserService#findAll() UserService.findAll()
      */
     @GetMapping(value = "/users",
-            produces = "application/json")
+        produces = "application/json")
     public ResponseEntity<?> listAllUsers()
     {
         List<User> myUsers = userService.findAll();
         return new ResponseEntity<>(myUsers,
-                                    HttpStatus.OK);
+            HttpStatus.OK);
     }
 
     /**
@@ -60,14 +52,14 @@ public class UserController
      * @see UserService#findUserById(long) UserService.findUserById(long)
      */
     @GetMapping(value = "/user/{userId}",
-            produces = "application/json")
+        produces = "application/json")
     public ResponseEntity<?> getUserById(
-            @PathVariable
-                    Long userId)
+        @PathVariable
+            Long userId)
     {
         User u = userService.findUserById(userId);
         return new ResponseEntity<>(u,
-                                    HttpStatus.OK);
+            HttpStatus.OK);
     }
 
     /**
@@ -79,14 +71,14 @@ public class UserController
      * @see UserService#findByName(String) UserService.findByName(String)
      */
     @GetMapping(value = "/user/name/{userName}",
-            produces = "application/json")
+        produces = "application/json")
     public ResponseEntity<?> getUserByName(
-            @PathVariable
-                    String userName)
+        @PathVariable
+            String userName)
     {
         User u = userService.findByName(userName);
         return new ResponseEntity<>(u,
-                                    HttpStatus.OK);
+            HttpStatus.OK);
     }
 
     /**
@@ -98,14 +90,14 @@ public class UserController
      * @see UserService#findByNameContaining(String) UserService.findByNameContaining(String)
      */
     @GetMapping(value = "/user/name/like/{userName}",
-            produces = "application/json")
+        produces = "application/json")
     public ResponseEntity<?> getUserLikeName(
-            @PathVariable
-                    String userName)
+        @PathVariable
+            String userName)
     {
         List<User> u = userService.findByNameContaining(userName);
         return new ResponseEntity<>(u,
-                                    HttpStatus.OK);
+            HttpStatus.OK);
     }
 
     /**
@@ -120,12 +112,12 @@ public class UserController
      * @see UserService#save(User) UserService.save(User)
      */
     @PostMapping(value = "/user",
-            consumes = "application/json")
+        consumes = "application/json")
     public ResponseEntity<?> addNewUser(
-            @Valid
-            @RequestBody
-                    User newuser) throws
-            URISyntaxException
+        @Valid
+        @RequestBody
+            User newuser) throws
+                          URISyntaxException
     {
         newuser.setUserid(0);
         newuser = userService.save(newuser);
@@ -133,14 +125,14 @@ public class UserController
         // set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newUserURI = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{userid}")
-                .buildAndExpand(newuser.getUserid())
-                .toUri();
+            .path("/{userid}")
+            .buildAndExpand(newuser.getUserid())
+            .toUri();
         responseHeaders.setLocation(newUserURI);
 
         return new ResponseEntity<>(null,
-                                    responseHeaders,
-                                    HttpStatus.CREATED);
+            responseHeaders,
+            HttpStatus.CREATED);
     }
 
     /**
@@ -157,13 +149,13 @@ public class UserController
      * @see UserService#save(User) UserService.save(User)
      */
     @PutMapping(value = "/user/{userid}",
-            consumes = "application/json")
+        consumes = "application/json")
     public ResponseEntity<?> updateFullUser(
-            @Valid
-            @RequestBody
-                    User updateUser,
-            @PathVariable
-                    long userid)
+        @Valid
+        @RequestBody
+            User updateUser,
+        @PathVariable
+            long userid)
     {
         updateUser.setUserid(userid);
         userService.save(updateUser);
@@ -183,15 +175,15 @@ public class UserController
      * @see UserService#update(User, long) UserService.update(User, long)
      */
     @PatchMapping(value = "/user/{id}",
-            consumes = "application/json")
+        consumes = "application/json")
     public ResponseEntity<?> updateUser(
-            @RequestBody
-                    User updateUser,
-            @PathVariable
-                    long id)
+        @RequestBody
+            User updateUser,
+        @PathVariable
+            long id)
     {
         userService.update(updateUser,
-                           id);
+            id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -204,8 +196,8 @@ public class UserController
      */
     @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<?> deleteUserById(
-            @PathVariable
-                    long id)
+        @PathVariable
+            long id)
     {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);

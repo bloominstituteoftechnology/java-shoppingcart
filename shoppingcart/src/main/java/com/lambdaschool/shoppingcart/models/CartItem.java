@@ -4,27 +4,30 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
+@IdClass(CartItemId.class)
 @Table(name = "cartitems")
 public class CartItem
-        extends Auditable
-        implements Serializable
+    extends Auditable
+    implements Serializable
 {
     @Id
     @ManyToOne
-    @JoinColumn(name = "cartid")
-    @JsonIgnoreProperties(value = "products")
-    private Cart cart;
+    @JoinColumn(name = "userid")
+    @JsonIgnoreProperties(value = "carts",
+        allowSetters = true)
+    private User user;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "productid")
-    @JsonIgnoreProperties(value = "carts")
+    @JsonIgnoreProperties(value = "carts",
+        allowSetters = true)
     private Product product;
 
     private long quantity;
+
     private String comments;
 
     public CartItem()
@@ -32,14 +35,26 @@ public class CartItem
 
     }
 
-    public Cart getCart()
+    public CartItem(
+        User user,
+        Product product,
+        long quantity,
+        String comments)
     {
-        return cart;
+        this.user = user;
+        this.product = product;
+        this.quantity = quantity;
+        this.comments = comments;
     }
 
-    public void setCart(Cart cart)
+    public User getUser()
     {
-        this.cart = cart;
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 
     public Product getProduct()
@@ -83,20 +98,15 @@ public class CartItem
         {
             return false;
         }
-        CartItem cart_item = (CartItem) o;
-        return quantity == cart_item.quantity &&
-                cart.equals(cart_item.cart) &&
-                product.equals(cart_item.product) &&
-                Objects.equals(comments,
-                               cart_item.comments);
+
+        CartItem that = (CartItem) o;
+        return ((user == null) ? 0 : user.getUserid()) == ((that.user == null) ? 0 : that.user.getUserid()) &&
+            ((product == null) ? 0 : product.getProductid()) == ((that.product == null) ? 0 : that.product.getProductid());
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(cart,
-                            product,
-                            quantity,
-                            comments);
+        return 37;
     }
 }

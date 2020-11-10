@@ -3,18 +3,9 @@ package com.lambdaschool.shoppingcart.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,7 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User
-        extends Auditable
+    extends Auditable
 {
     /**
      * The primary key (long) of the users table.
@@ -36,7 +27,7 @@ public class User
      * The username (String). Cannot be null and must be unique
      */
     @Column(nullable = false,
-            unique = true)
+        unique = true)
     private String username;
 
     /**
@@ -46,28 +37,32 @@ public class User
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    private String comments;
+
     /**
      * Primary email account of user. Could be used as the userid. Cannot be null and must be unique.
      */
     @Column(nullable = false,
-            unique = true)
+        unique = true)
     @Email
     private String primaryemail;
 
     @OneToMany(mappedBy = "user",
-        cascade = CascadeType.ALL)
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
     @JsonIgnoreProperties(value = "user",
         allowSetters = true)
-    private List<Cart> carts = new ArrayList<>();
+    private Set<CartItem> carts = new HashSet<>();
 
     /**
      * Part of the join relationship between user and role
      * connects users to the user role combination
      */
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JsonIgnoreProperties(value = "user", allowSetters = true)
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
+    @JsonIgnoreProperties(value = "user",
+        allowSetters = true)
     private Set<UserRoles> roles = new HashSet<>();
 
     /**
@@ -87,13 +82,15 @@ public class User
      * @param primaryemail The primary email (String) of the user
      */
     public User(
-            String username,
-            String password,
-            String primaryemail)
+        String username,
+        String password,
+        String primaryemail,
+        String comments)
     {
         setUsername(username);
         setPassword(password);
         this.primaryemail = primaryemail;
+        this.comments = comments;
     }
 
     /**
@@ -177,26 +174,6 @@ public class User
     }
 
     /**
-     * Getter for the list of useremails for this user
-     *
-     * @return the list of useremails (List(Useremail)) for this user
-     */
-    public List<Useremail> getUseremails()
-    {
-        return useremails;
-    }
-
-    /**
-     * Setter for list of useremails for this user
-     *
-     * @param useremails the new list of useremails (List(Useremail)) for this user
-     */
-    public void setUseremails(List<Useremail> useremails)
-    {
-        this.useremails = useremails;
-    }
-
-    /**
      * Getter for user role combinations
      *
      * @return A list of user role combinations associated with this user
@@ -214,5 +191,25 @@ public class User
     public void setRoles(Set<UserRoles> roles)
     {
         this.roles = roles;
+    }
+
+    public String getComments()
+    {
+        return comments;
+    }
+
+    public void setComments(String comments)
+    {
+        this.comments = comments;
+    }
+
+    public Set<CartItem> getCarts()
+    {
+        return carts;
+    }
+
+    public void setCarts(Set<CartItem> carts)
+    {
+        this.carts = carts;
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service(value = "helperFunctions")
 public class HelperFunctionsImpl
-        implements HelperFunctions
+    implements HelperFunctions
 {
     /**
      * A public field used to store data from another API. This will have to be populated each time the application is run.
