@@ -22,4 +22,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(securityUserService).passwordEncoder(encoder());
     }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new @CryptPasswordEncoder();
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
+    }
 }
