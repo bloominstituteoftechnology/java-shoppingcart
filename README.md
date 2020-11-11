@@ -61,9 +61,8 @@ You are to start with the initial application provided. To find out the endpoint
     * [ ] GET /users/user/name/{userName}
     * [ ] GET /users/user/name/like/{userName}
     * [ ] GET /users/user
-  * [ ] For the following routes, admins can access them and a user can access only their own data
     * [ ] PATCH /users/user/{id}
-    * [ ] GET /users/user/{userId}
+    * [ ] GET /users/user/{userId} 
   * [ ] For the routes /carts/**
     * [ ] Remove the user/{userid} path variable from all the routes
     * [ ] Use the authenticated as the user to work with
@@ -77,3 +76,6 @@ You are to start with the initial application provided. To find out the endpoint
 ### Stretch Goals
 
 * [ ] When working with Cart Items, give the client the option of sending a comment
+* [ ] For the following routes, admins can access them and a user can access only their own data
+  * [ ] PATCH /users/user/{id}
+  * [ ] GET /users/user/{userId}
