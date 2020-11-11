@@ -57,7 +57,7 @@ public class CartController
     {
         String uname = SecurityContextHolder.getContext().getAuthentication().getName();
         User u = userService.findByName(uname);
-        
+
         CartItem removeCartItem = cartItemService.removeFromCart(u.getUserid(),
             productid,
             "I am still not working");
