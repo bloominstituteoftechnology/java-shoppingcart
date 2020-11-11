@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service(value = "securityUserService")
-public class SecurityUserServiceImpl extends UserDetailsService {
+public class SecurityUserServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
