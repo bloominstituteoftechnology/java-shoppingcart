@@ -7,6 +7,7 @@ import com.lambdaschool.shoppingcart.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,22 +31,23 @@ public class CartController
             HttpStatus.OK);
     }
 
-    @PutMapping(value = "/add/user/{userid}/product/{productid}",
+    @PutMapping(value = "/add/user/product/{productid}",
         produces = {"application/json"})
     public ResponseEntity<?> addToCart(
         @PathVariable
-            long userid,
-        @PathVariable
             long productid)
     {
-        CartItem addCartTtem = cartItemService.addToCart(userid,
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+        User u = userService.findByName(uname);
+
+        CartItem addCartTtem = cartItemService.addToCart(u.getUserid(),
             productid,
             "I am not working");
         return new ResponseEntity<>(addCartTtem,
             HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/remove/user/{userid}/product/{productid}",
+    @DeleteMapping(value = "/remove/user/product/{productid}",
         produces = {"application/json"})
     public ResponseEntity<?> removeFromCart(
         @PathVariable
@@ -53,7 +55,10 @@ public class CartController
         @PathVariable
             long productid)
     {
-        CartItem removeCartItem = cartItemService.removeFromCart(userid,
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+        User u = userService.findByName(uname);
+        
+        CartItem removeCartItem = cartItemService.removeFromCart(u.getUserid(),
             productid,
             "I am still not working");
         return new ResponseEntity<>(removeCartItem,
