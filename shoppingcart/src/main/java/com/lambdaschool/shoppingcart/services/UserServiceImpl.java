@@ -140,7 +140,7 @@ public class UserServiceImpl
 
         if (user.getPassword() != null)
         {
-            currentUser.setPassword(user.getPassword());
+            currentUser.setPasswordNoEncrypt(user.getPassword());
         }
 
         if (user.getPrimaryemail() != null)

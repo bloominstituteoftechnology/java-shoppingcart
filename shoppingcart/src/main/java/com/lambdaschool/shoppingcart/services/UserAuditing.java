@@ -22,7 +22,15 @@ public class UserAuditing
     public Optional<String> getCurrentAuditor()
     {
         String uname;
-        uname = "SYSTEM";
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            uname = "SYSTEM";
+        } else {
+            uname = authentication.getName();
+        }
+
+
         return Optional.of(uname);
     }
 }
