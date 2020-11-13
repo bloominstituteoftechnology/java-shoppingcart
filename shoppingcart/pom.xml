@@ -93,6 +93,8 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>fatima-rizvi-web35deploy</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
