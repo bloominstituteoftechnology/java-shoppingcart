@@ -117,7 +117,7 @@
     </dependencies>
 
     <build>
-        <finalName>jrmmba-stumps</finalName>
+        <finalName>simone-web35deploy</finalName>
 
         <plugins>
             <plugin>
