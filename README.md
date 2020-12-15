@@ -66,15 +66,15 @@ You are to start with the initial application provided. To find out the endpoint
   * [ ] For the routes /carts/**
     * [ ] Remove the user/{userid} path variable from all the routes
     * [ ] Use the authenticated as the user to work with
+
+### Stretch Goals
+
 * [ ] Add new endpoints
   * [ ] http://localhost:2019/users/myinfo
     * [ ] Any authenticated user can access this endpoint and it will return the authenticated users information
   * [ ] http://localhost:2019/logout
     * [ ] Allows a user to logout of the system by removing their access token from the token store
   * [ ] Address CORS
-
-### Stretch Goals
-
 * [ ] When working with Cart Items, give the client the option of sending a comment
 * [ ] For the following routes, admins can access them and a user can access only their own data
   * [ ] PATCH /users/user/{id}
