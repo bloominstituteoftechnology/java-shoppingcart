@@ -1,7 +1,11 @@
 package com.lambdaschool.shoppingcart.services;
 
+import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
 import com.lambdaschool.shoppingcart.models.ValidationError;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -66,5 +70,19 @@ public class HelperFunctionsImpl
             }
         }
         return listVE;
+    }
+
+    @Override
+    public boolean isAuthorizedToMakeChange(String username)
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (username.equalsIgnoreCase(authentication.getName()) ||
+            authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+        {
+            return true;
+        } else
+        {
+            throw new ResourceNotFoundException(authentication.getName() + " not authorized to make change.");
+        }
     }
 }

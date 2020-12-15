@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -38,6 +39,7 @@ public class RolesController
      * @return JSON List of all the roles and their associated users
      * @see RoleService#findAll() RoleService.findAll()
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/roles",
         produces = "application/json")
     public ResponseEntity<?> listRoles()
@@ -55,6 +57,7 @@ public class RolesController
      * @return JSON object of the role you seek
      * @see RoleService#findRoleById(long) RoleService.findRoleById(long)
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/role/{roleId}",
         produces = "application/json")
     public ResponseEntity<?> getRoleById(
@@ -74,6 +77,7 @@ public class RolesController
      * @return JSON object of the role you seek
      * @see RoleService#findByName(String) RoleService.findByName(String)
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/role/name/{roleName}",
         produces = "application/json")
     public ResponseEntity<?> getRoleByName(
@@ -93,6 +97,7 @@ public class RolesController
      * @return A location header with the URI to the newly created role and a status of CREATED
      * @see RoleService#save(Role) RoleService.save(Role)
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/role",
         consumes = "application/json")
     public ResponseEntity<?> addNewRole(
@@ -125,6 +130,7 @@ public class RolesController
      * @param newRole The new name (String) for the role
      * @return Status of OK
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/role/{roleid}",
         consumes = {"application/json"})
     public ResponseEntity<?> putUpdateRole(
