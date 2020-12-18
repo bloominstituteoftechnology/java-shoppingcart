@@ -13,4 +13,6 @@ public interface CartItemService
         long userid,
         long productid,
         String comment);
+
+    Object findAll();
 }
