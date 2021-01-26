@@ -20,10 +20,10 @@ You are creating a Java Spring REST API server which stores data in an H2 databa
 
 All tables contain the following auditing fields
 
-* created_by - user name who created the row. Should default to SYSTEM
-* created_date - date field when the row was created
-* last_modified_by - user name who last changed data in the row. Should default to SYSTEM
-* last_modified_date - date field when the data in the row was last changed
+* **createdby** - user name who created the row. Should default to SYSTEM
+* **createddate** - date field when the row was created
+* **lastmodifiedby** - user name who last changed data in the row. Should default to SYSTEM
+* **lastmodifieddate** - date field when the data in the row was last changed
 
 Table Relationships include
 
@@ -39,8 +39,8 @@ You are to start with the initial application provided. To find out the endpoint
 * [ ] Please fork and clone this repository.
 * [ ] This repository does have a starter project, so you must start with that application inside of the cloned repository folder. Regularly commit and push your code as appropriate.
 * [ ] A data.sql file has been provided with seed data. You can use this class directly or modify it to fit your models. However, the data found in the file is the seed data to use!
-* [ ] Note that all of the users' passwords are "LambdaLlama".
-* [ ] Note that For the final project, passwords in the data.sql file will need to be converted to BCrypt! To convert Bcrypt, you can use the website [https://bcrypt-generator.com/](https://bcrypt-generator.com/). Once you have the BCrypt string, you will replace LambdaLlama with that BCrypt string.
+* [ ] Note that all of the users' passwords are **LambdaLlama**.
+* [ ] ***Note that For the final project, passwords in the data.sql file will need to be converted to BCrypt! To convert Bcrypt, you can use the website [https://bcrypt-generator.com/](https://bcrypt-generator.com/). Once you have the BCrypt string, you will replace LambdaLlama with that BCrypt string.***
 
 ### MVP
 
@@ -62,7 +62,7 @@ You are to start with the initial application provided. To find out the endpoint
     * [ ] GET /users/user/name/like/{userName}
     * [ ] GET /users/user
     * [ ] PATCH /users/user/{id}
-    * [ ] GET /users/user/{userId} 
+    * [ ] GET /users/user/{userId}
   * [ ] For the routes /carts/**
     * [ ] Remove the user/{userid} path variable from all the routes
     * [ ] Use the authenticated as the user to work with
@@ -74,7 +74,7 @@ You are to start with the initial application provided. To find out the endpoint
     * [ ] Any authenticated user can access this endpoint and it will return the authenticated users information
   * [ ] http://localhost:2019/logout
     * [ ] Allows a user to logout of the system by removing their access token from the token store
-  * [ ] Address CORS
+* [ ] Address CORS
 * [ ] When working with Cart Items, give the client the option of sending a comment
 * [ ] For the following routes, admins can access them and a user can access only their own data
   * [ ] PATCH /users/user/{id}
