@@ -64,6 +64,7 @@ You are to start with the initial application provided. To find out the endpoint
     * [ ] PATCH /users/user/{id}
     * [ ] GET /users/user/{userId}
   * [ ] For the routes /carts/**
+    * [ ] All authenticated users can access /carts/***
     * [ ] Remove the user/{userid} path variable from all the routes
     * [ ] Use the authenticated as the user to work with
 
