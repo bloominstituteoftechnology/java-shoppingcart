@@ -6,6 +6,8 @@ import com.lambdaschool.shoppingcart.models.Role;
 import com.lambdaschool.shoppingcart.models.User;
 import com.lambdaschool.shoppingcart.models.UserRoles;
 import com.lambdaschool.shoppingcart.repository.UserRepository;
+import net.bytebuddy.implementation.bytecode.Throw;
+import org.hibernate.id.uuid.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,18 +36,32 @@ public class UserServiceImpl
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private HelperFunctions helperFunctions;
+
     public User findUserById(long id) throws
                                       ResourceNotFoundException
     {
-        return userrepos.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
+      User currentUser = userrepos.findById(id)
+          .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
+
+      if (helperFunctions.isAuthorizedToMakeChange(currentUser.getUsername()))
+      {
+          return currentUser;
+      } else
+      {
+          throw new ResourceNotFoundException("This user isn't authorized to make that change!");
+      }
     }
+
+
 
     @Override
     public List<User> findByNameContaining(String username)
     {
         return userrepos.findByUsernameContainingIgnoreCase(username.toLowerCase());
     }
+
 
     @Override
     public List<User> findAll()
@@ -101,7 +117,7 @@ public class UserServiceImpl
 
         newUser.setUsername(user.getUsername()
             .toLowerCase());
-        newUser.setPassword(user.getPassword());
+        newUser.setPasswordNoEncrypt(user.getPassword());
         newUser.setPrimaryemail(user.getPrimaryemail()
             .toLowerCase());
 
@@ -141,7 +157,7 @@ public class UserServiceImpl
 
         if (user.getPassword() != null)
         {
-            currentUser.setPassword(user.getPassword());
+            currentUser.setPasswordNoEncrypt(user.getPassword());
         }
 
         if (user.getPrimaryemail() != null)
