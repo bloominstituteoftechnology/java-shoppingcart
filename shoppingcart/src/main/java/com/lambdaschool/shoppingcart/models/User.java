@@ -94,7 +94,7 @@ public class User
         String comments)
     {
         setUsername(username);
-        setPassword(password);
+        setPassword(password); // do instead of this.password = password so it is forced to be encrypted
         this.primaryemail = primaryemail;
         this.comments = comments;
     }
@@ -178,13 +178,13 @@ public class User
     public void setPassword(String password)
     {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+        this.password = passwordEncoder.encode(password); // this encrypts the password
     }
 
     public void setPasswordNoEncrypt(String password)
     {
         this.password = password;
-    }
+    } //this is to call when no encrypt needed
 
     /**
      * Getter for user role combinations

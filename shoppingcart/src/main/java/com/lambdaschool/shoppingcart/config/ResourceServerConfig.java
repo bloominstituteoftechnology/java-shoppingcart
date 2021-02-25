@@ -30,22 +30,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception
     {
         http.authorizeRequests()
+                .antMatchers("/",
+                        "/h2-console/**",
+                "/swagger-resources/**",
+                "/swagger-resource/**",
+                "/swagger-ui.html",
+                "/v2/api-docs",
+                "/webjars/**")
+                .permitAll()
                 .antMatchers("/roles/**", "/products/**")
                 .hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/users/user")
-                .hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "user/users/{id}")
-                .hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/users/user/{id}")
-                .hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/users/user/name/{userName}",
-                        "/users/user/name/like/{userName}", "users/user","/users/user/{userid}")
-                .hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.PATCH, "/users/user/{id}")
-                .hasAnyRole("ADMIN")
-                .antMatchers("/carts/**")
+                .antMatchers(HttpMethod.POST, "/users/**", "/oauth/revoke-token", "/logout")
                 .authenticated()
-                .anyRequest().denyAll()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());

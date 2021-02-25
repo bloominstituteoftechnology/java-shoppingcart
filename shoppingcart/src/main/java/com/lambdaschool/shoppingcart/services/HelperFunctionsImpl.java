@@ -1,13 +1,18 @@
 package com.lambdaschool.shoppingcart.services;
 
+import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
 import com.lambdaschool.shoppingcart.models.ValidationError;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service(value = "helperFunctions")
 public class HelperFunctionsImpl
@@ -66,5 +71,25 @@ public class HelperFunctionsImpl
             }
         }
         return listVE;
+    }
+
+    @Override
+    public boolean isAuthorizedToMakeChange(String username)
+    {
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication(); //gets current user authenticated
+        if (username.equalsIgnoreCase(authentication.getName().toLowerCase())
+                //if you are the one trying to edit, you can make change
+            ||
+            authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                // if you are admin, you can change any user
+        {
+            return true;
+        } else
+        {
+            throw new ResourceNotFoundException(authentication.getName() + " isn't authorized to make this change");
+            // or else STOP!
+        }
+
     }
 }
