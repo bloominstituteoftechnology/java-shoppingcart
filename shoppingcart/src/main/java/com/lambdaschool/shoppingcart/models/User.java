@@ -2,10 +2,14 @@ package com.lambdaschool.shoppingcart.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -160,7 +164,8 @@ public class User
      */
     public String getPassword()
     {
-        return password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.ecode(password)
     }
 
     /**
@@ -211,5 +216,18 @@ public class User
     public void setCarts(Set<CartItem> carts)
     {
         this.carts = carts;
+    }
+
+    public List <SimpleGrantedAuthority> getAuthority()
+    {
+        List<SimpleGrantedAuthority> rtnlist = new ArrayList<>();
+
+        for UserRoles r : this.roles)
+
+
+        {
+            String myRole ="ROLE" + r.getRole().getName().toUpperCase();
+            rtnlist.add(new SimpleGrantedAuthority(myrole));
+        }
     }
 }

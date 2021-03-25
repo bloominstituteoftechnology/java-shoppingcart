@@ -20,8 +20,7 @@ import java.util.List;
 @Transactional
 @Service(value = "userService")
 public class UserServiceImpl
-    implements UserService
-{
+        implements UserService {
     /**
      * Connects this service to the User table.
      */
@@ -35,47 +34,41 @@ public class UserServiceImpl
     private RoleService roleService;
 
     public User findUserById(long id) throws
-                                      ResourceNotFoundException
-    {
+            ResourceNotFoundException {
         return userrepos.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
     }
 
     @Override
-    public List<User> findByNameContaining(String username)
-    {
+    public List<User> findByNameContaining(String username) {
         return userrepos.findByUsernameContainingIgnoreCase(username.toLowerCase());
     }
 
     @Override
-    public List<User> findAll()
-    {
+    public List<User> findAll() {
         List<User> list = new ArrayList<>();
         /*
          * findAll returns an iterator set.
          * iterate over the iterator set and add each element to an array list.
          */
         userrepos.findAll()
-            .iterator()
-            .forEachRemaining(list::add);
+                .iterator()
+                .forEachRemaining(list::add);
         return list;
     }
 
     @Transactional
     @Override
-    public void delete(long id)
-    {
+    public void delete(long id) {
         userrepos.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
         userrepos.deleteById(id);
     }
 
     @Override
-    public User findByName(String name)
-    {
+    public User findByName(String name) {
         User uu = userrepos.findByUsername(name.toLowerCase());
-        if (uu == null)
-        {
+        if (uu == null) {
             throw new ResourceNotFoundException("User name " + name + " not found!");
         }
         return uu;
@@ -83,37 +76,33 @@ public class UserServiceImpl
 
     @Transactional
     @Override
-    public User save(User user)
-    {
+    public User save(User user) {
         if (user.getCarts()
-            .size() > 0)
-        {
+                .size() > 0) {
             throw new ResourceFoundException("Carts are not created via Users");
         }
 
         User newUser = new User();
 
-        if (user.getUserid() != 0)
-        {
+        if (user.getUserid() != 0) {
             newUser = userrepos.findById(user.getUserid())
-                .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
+                    .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
         }
 
         newUser.setUsername(user.getUsername()
-            .toLowerCase());
+                .toLowerCase());
         newUser.setPassword(user.getPassword());
         newUser.setPrimaryemail(user.getPrimaryemail()
-            .toLowerCase());
+                .toLowerCase());
 
         newUser.getRoles()
-            .clear();
-        for (UserRoles ur : user.getRoles())
-        {
+                .clear();
+        for (UserRoles ur : user.getRoles()) {
             Role addRole = roleService.findRoleById(ur.getRole()
-                .getRoleid());
+                    .getRoleid());
             newUser.getRoles()
-                .add(new UserRoles(newUser,
-                    addRole));
+                    .add(new UserRoles(newUser,
+                            addRole));
         }
 
         return userrepos.save(newUser);
@@ -122,52 +111,44 @@ public class UserServiceImpl
     @Transactional
     @Override
     public User update(
-        User user,
-        long id)
-    {
+            User user,
+            long id) {
         if (user.getCarts()
-            .size() > 0)
-        {
+                .size() > 0) {
             throw new ResourceFoundException("Carts are not updated via Users");
         }
 
         User currentUser = findUserById(id);
 
-        if (user.getUsername() != null)
-        {
+        if (user.getUsername() != null) {
             currentUser.setUsername(user.getUsername()
-                .toLowerCase());
+                    .toLowerCase());
         }
 
-        if (user.getPassword() != null)
-        {
+        if (user.getPassword() != null) {
             currentUser.setPassword(user.getPassword());
         }
 
-        if (user.getPrimaryemail() != null)
-        {
+        if (user.getPrimaryemail() != null) {
             currentUser.setPrimaryemail(user.getPrimaryemail()
-                .toLowerCase());
+                    .toLowerCase());
         }
 
-        if (user.getComments() != null)
-        {
+        if (user.getComments() != null) {
             currentUser.setComments(user.getComments());
         }
 
         if (user.getRoles()
-            .size() > 0)
-        {
+                .size() > 0) {
             currentUser.getRoles()
-                .clear();
-            for (UserRoles ur : user.getRoles())
-            {
+                    .clear();
+            for (UserRoles ur : user.getRoles()) {
                 Role addRole = roleService.findRoleById(ur.getRole()
-                    .getRoleid());
+                        .getRoleid());
 
                 currentUser.getRoles()
-                    .add(new UserRoles(currentUser,
-                        addRole));
+                        .add(new UserRoles(currentUser,
+                                addRole));
             }
         }
 
@@ -176,8 +157,7 @@ public class UserServiceImpl
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void deleteAll()
-    {
+    public void deleteAll() {
         userrepos.deleteAll();
     }
 }
