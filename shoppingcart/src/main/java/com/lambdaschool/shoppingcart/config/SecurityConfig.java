@@ -1,11 +1,13 @@
 package com.lambdaschool.shoppingcart.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -19,14 +21,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    privare UserDetailsService securityUserService;
+    private UserDetailsService securityUserService;
 
     @Autowired
-    public void globalUserDetails(AuthenticationManagerBuilder auth)
+    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception
         throws
             exception
     {
-        auth.userDetailsService(securityUserService)
+        auth.UserDetailsService(securityUserService)
     }           .passwordEncoder(encoder());
 
     @Bean
@@ -36,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
-  @BeAn
-    public PasswordEncoder encoder()
+  @Bean
+  { public PasswordEncoder encoder()
       return new BcryptPasswordEncoder();
 
 }
