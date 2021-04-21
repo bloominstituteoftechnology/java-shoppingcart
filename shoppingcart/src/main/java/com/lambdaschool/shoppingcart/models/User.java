@@ -220,7 +220,7 @@ public class User
     public List<SimpleGrantedAuthority> getAuthority(){
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
         for (UserRoles ur: this.roles){
-           String myRole = "ROLE" + ur.getRole().getName().toUpperCase();
+           String myRole = "ROLE_" + ur.getRole().getName().toUpperCase();
            rtnList.add(new SimpleGrantedAuthority(myRole));
         }
         return rtnList;
