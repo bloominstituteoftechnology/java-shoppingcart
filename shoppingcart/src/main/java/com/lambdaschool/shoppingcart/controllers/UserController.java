@@ -1,11 +1,14 @@
 package com.lambdaschool.shoppingcart.controllers;
 
-import com.lambdaschool.shoppingcart.models.User;
+import com.lambdaschool.shoppingcart.exceptions.ResourceFoundException;
+import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
+import com.lambdaschool.shoppingcart.models.*;
+import com.lambdaschool.shoppingcart.repository.RoleRepository;
+import com.lambdaschool.shoppingcart.repository.UserRepository;
+import com.lambdaschool.shoppingcart.services.RoleService;
 import com.lambdaschool.shoppingcart.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +37,8 @@ public class UserController
 
     @Autowired
     private TokenStore tokenStore;
+
+
     /**
      * Returns a list of all users
      * <br>Example: <a href="http://localhost:2019/users/users">http://localhost:2019/users/users</a>
@@ -60,9 +66,7 @@ public class UserController
     @GetMapping(value = "/user/{userId}",
         produces = "application/json")
     public ResponseEntity<?> getUserById(
-        @PathVariable
-            Long userId)
-    {
+        @PathVariable Long userId){
         User u = userService.findUserById(userId);
         String uname = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByName(uname);
@@ -251,4 +255,5 @@ public class UserController
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
