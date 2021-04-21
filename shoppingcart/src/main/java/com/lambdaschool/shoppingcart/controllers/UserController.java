@@ -64,8 +64,14 @@ public class UserController
             Long userId)
     {
         User u = userService.findUserById(userId);
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByName(uname);
+        if (userId == user.getUserid()) {
         return new ResponseEntity<>(u,
             HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     /**
@@ -164,9 +170,14 @@ public class UserController
             long userid)
     {
         updateUser.setUserid(userid);
-        userService.save(updateUser);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByName(uname);
+        if (userid == user.getUserid()) {
+            userService.save(updateUser);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     /**
@@ -188,9 +199,15 @@ public class UserController
         @PathVariable
             long id)
     {
-        userService.update(updateUser,
-            id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByName(uname);
+        if (id == user.getUserid()) {
+            userService.update(updateUser,
+                               id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     /**
@@ -205,8 +222,14 @@ public class UserController
         @PathVariable
             long id)
     {
-        userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByName(uname);
+        if (id == user.getUserid()) {
+            userService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
     @GetMapping(value = "/myinfo", produces = "application/json")
     public ResponseEntity<?> getCurrentUserInfo(){
