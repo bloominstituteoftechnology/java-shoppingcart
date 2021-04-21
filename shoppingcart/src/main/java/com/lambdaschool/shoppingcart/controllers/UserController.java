@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +31,8 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TokenStore tokenStore;
     /**
      * Returns a list of all users
      * <br>Example: <a href="http://localhost:2019/users/users">http://localhost:2019/users/users</a>
@@ -200,6 +206,26 @@ public class UserController
             long id)
     {
         userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping(value = "/myinfo", produces = "application/json")
+    public ResponseEntity<?> getCurrentUserInfo(){
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByName(uname);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/logout")
+    public ResponseEntity<?> logoutSelf(HttpServletRequest request){
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null) {
+            //find the token
+            String tokenValue = authHeader.replace("Bearer", "")
+                .trim();
+            //now remove it
+            OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
+            tokenStore.removeAccessToken(accessToken);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
