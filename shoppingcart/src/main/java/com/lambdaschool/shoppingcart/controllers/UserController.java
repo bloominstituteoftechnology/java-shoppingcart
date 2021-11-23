@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -51,13 +52,13 @@ public class UserController
      * @return JSON object of the user you seek
      * @see UserService#findUserById(long) UserService.findUserById(long)
      */
-    @GetMapping(value = "/user/{userId}",
+    @GetMapping(value = "/user"
         produces = "application/json")
-    public ResponseEntity<?> getUserById(
-        @PathVariable
-            Long userId)
+    public ResponseEntity<?> getUserById()
     {
-        User u = userService.findUserById(userId);
+        String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User u  = userService.findByName(uname);
         return new ResponseEntity<>(u,
             HttpStatus.OK);
     }
@@ -148,7 +149,7 @@ public class UserController
      * @return status of OK
      * @see UserService#save(User) UserService.save(User)
      */
-    @PutMapping(value = "/user/{userid}",
+    @PutMapping(value = "/user",
         consumes = "application/json")
     public ResponseEntity<?> updateFullUser(
         @Valid
