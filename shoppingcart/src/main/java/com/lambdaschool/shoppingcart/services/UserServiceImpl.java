@@ -1,7 +1,4 @@
 package com.lambdaschool.shoppingcart.services;
-
-import com.lambdaschool.shoppingcart.exceptions.ResourceFoundException;
-import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
 import com.lambdaschool.shoppingcart.models.Role;
 import com.lambdaschool.shoppingcart.models.User;
 import com.lambdaschool.shoppingcart.models.UserRoles;
@@ -11,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lambdaschool.shoppingcart.exceptions.ResourceNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Implements UserService Interface
@@ -35,7 +34,7 @@ public class UserServiceImpl
     private RoleService roleService;
 
     public User findUserById(long id) throws
-                                      ResourceNotFoundException
+        ResourceNotFoundException
     {
         return userrepos.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
@@ -85,26 +84,18 @@ public class UserServiceImpl
     @Override
     public User save(User user)
     {
-        if (user.getCarts()
-            .size() > 0)
-        {
-            throw new ResourceFoundException("Carts are not created via Users");
-        }
-
         User newUser = new User();
-
         if (user.getUserid() != 0)
         {
-            newUser = userrepos.findById(user.getUserid())
+            userrepos.findById(user.getUserid())
                 .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
+            newUser.setUserid(user.getUserid());
         }
-
         newUser.setUsername(user.getUsername()
             .toLowerCase());
-        newUser.setPassword(user.getPassword());
+        newUser.setPasswordNoEncrypt(user.getPassword());
         newUser.setPrimaryemail(user.getPrimaryemail()
             .toLowerCase());
-
         newUser.getRoles()
             .clear();
         for (UserRoles ur : user.getRoles())
@@ -112,10 +103,8 @@ public class UserServiceImpl
             Role addRole = roleService.findRoleById(ur.getRole()
                 .getRoleid());
             newUser.getRoles()
-                .add(new UserRoles(newUser,
-                    addRole));
+                .add(new UserRoles(newUser, addRole));
         }
-
         return userrepos.save(newUser);
     }
 
@@ -125,36 +114,21 @@ public class UserServiceImpl
         User user,
         long id)
     {
-        if (user.getCarts()
-            .size() > 0)
-        {
-            throw new ResourceFoundException("Carts are not updated via Users");
-        }
-
         User currentUser = findUserById(id);
-
         if (user.getUsername() != null)
         {
             currentUser.setUsername(user.getUsername()
                 .toLowerCase());
         }
-
         if (user.getPassword() != null)
         {
-            currentUser.setPassword(user.getPassword());
+            currentUser.setPasswordNoEncrypt(user.getPassword());
         }
-
         if (user.getPrimaryemail() != null)
         {
             currentUser.setPrimaryemail(user.getPrimaryemail()
                 .toLowerCase());
         }
-
-        if (user.getComments() != null)
-        {
-            currentUser.setComments(user.getComments());
-        }
-
         if (user.getRoles()
             .size() > 0)
         {
@@ -164,13 +138,10 @@ public class UserServiceImpl
             {
                 Role addRole = roleService.findRoleById(ur.getRole()
                     .getRoleid());
-
                 currentUser.getRoles()
-                    .add(new UserRoles(currentUser,
-                        addRole));
+                    .add(new UserRoles(currentUser, addRole));
             }
         }
-
         return userrepos.save(currentUser);
     }
 

@@ -7,6 +7,7 @@ import com.lambdaschool.shoppingcart.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,40 +20,46 @@ public class CartController
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/user/{userid}",
+    @GetMapping(value = "/user",
         produces = {"application/json"})
-    public ResponseEntity<?> listCartItemsByUserId(
-        @PathVariable
-            long userid)
+    public ResponseEntity<?> listCartItemsByUserId()
     {
-        User u = userService.findUserById(userid);
+        String currentUserName = SecurityContextHolder.getContext()
+            .getAuthentication()
+            .getName();
+        User u = userService.findByName(currentUserName);
         return new ResponseEntity<>(u,
             HttpStatus.OK);
     }
 
-    @PutMapping(value = "/add/user/{userid}/product/{productid}",
+    @PutMapping(value = "/add/product/{productid}",
         produces = {"application/json"})
     public ResponseEntity<?> addToCart(
         @PathVariable
-            long userid,
-        @PathVariable
             long productid)
     {
-        CartItem addCartTtem = cartItemService.addToCart(userid,
+        String currentUserName = SecurityContextHolder.getContext()
+            .getAuthentication()
+            .getName();
+        long userid = userService.findByName(currentUserName).getUserid();
+
+        CartItem addCartItem = cartItemService.addToCart(userid,
             productid,
             "I am not working");
-        return new ResponseEntity<>(addCartTtem,
+        return new ResponseEntity<>(addCartItem,
             HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/remove/user/{userid}/product/{productid}",
+    @DeleteMapping(value = "/remove/product/{productid}",
         produces = {"application/json"})
     public ResponseEntity<?> removeFromCart(
         @PathVariable
-            long userid,
-        @PathVariable
             long productid)
     {
+        String currentUserName = SecurityContextHolder.getContext()
+            .getAuthentication()
+            .getName();
+        long userid = userService.findByName(currentUserName).getUserid();
         CartItem removeCartItem = cartItemService.removeFromCart(userid,
             productid,
             "I am still not working");
