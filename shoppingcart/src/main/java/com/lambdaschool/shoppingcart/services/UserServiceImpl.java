@@ -7,6 +7,8 @@ import com.lambdaschool.shoppingcart.models.User;
 import com.lambdaschool.shoppingcart.models.UserRoles;
 import com.lambdaschool.shoppingcart.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,7 +103,7 @@ public class UserServiceImpl
 
         newUser.setUsername(user.getUsername()
             .toLowerCase());
-        newUser.setPassword(user.getPassword());
+        newUser.setPasswordNoEncrypt(user.getPassword());
         newUser.setPrimaryemail(user.getPrimaryemail()
             .toLowerCase());
 
@@ -125,6 +127,11 @@ public class UserServiceImpl
         User user,
         long id)
     {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        User authenticatedUser = userrepos.findByUsername(authentication.getName());
+//
+//        if (id == authenticatedUser = userrepos.getUserId() || isAdmin)
         if (user.getCarts()
             .size() > 0)
         {
@@ -141,7 +148,7 @@ public class UserServiceImpl
 
         if (user.getPassword() != null)
         {
-            currentUser.setPassword(user.getPassword());
+            currentUser.setPasswordNoEncrypt(user.getPassword());
         }
 
         if (user.getPrimaryemail() != null)
